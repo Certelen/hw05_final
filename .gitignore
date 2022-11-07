@@ -6,6 +6,17 @@ __pycache__/
 # C extensions
 *.so
 
+yatube/static/css
+yatube/static/img
+yatube/media
+
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover 
+
+
 # Distribution / packaging
 .Python
 build/

@@ -1,0 +1,25 @@
+<div class="row justify-content-center">
+  <div class="col-md-8 p-5">
+    <div class="card">
+      <div class="card-header">{{ card_header }}</div>
+      <div class="card-body">
+        {% if FORM %}
+          {% if LOGIN_FORM %}
+            {% include 'users/includes/form.html' with LOGIN_FORM=True %}
+          {% elif SIGNUP_FORM %} 
+            {% include 'users/includes/form.html' with SIGNUP_FORM=True %} 
+          {% elif CHANGE_FORM %} 
+            {% include 'users/includes/form.html' with CHANGE_FORM=True %} 
+          {% elif RESET_FORM %} 
+           {% include 'users/includes/form.html' with RESET_FORM=True %} 
+          {% elif RESET_CONFIRM %} 
+           {% include 'users/includes/form.html' with RESET_CONFIRM=True %} 
+          {% endif %}
+
+        {% else %}
+        {{ card_body }}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
