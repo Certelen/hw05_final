@@ -153,7 +153,7 @@ class PostViewsTests(TestCase):
             b'\x0A\x00\x3B'
         )
         cls.uploaded = SimpleUploadedFile(
-            name='small.gif',
+            name='small_1.gif',
             content=small_gif,
             content_type='image/gif'
         )
@@ -242,7 +242,7 @@ class PostViewsTests(TestCase):
                     self.assertTrue(
                         Post.objects.filter(
                             group=PostViewsTests.group_1,
-                            image__contains='gif',
+                            image='posts/small_1.gif',
                         ).exists()
                     )
 
@@ -269,8 +269,8 @@ class PostViewsTests(TestCase):
             with self.subTest(number_post=number_post):
                 self.assertIn(posts[number_post], posts_object)
 
-    def test_follow_unfollow(self):
-        """Проверка подписки и отписки"""
+    def test_follow(self):
+        """Проверка подписки"""
 
         self.assertFalse(Follow.objects.filter(user=PostViewsTests.user_1))
 
@@ -280,6 +280,14 @@ class PostViewsTests(TestCase):
             }))
 
         self.assertTrue(Follow.objects.filter(user=PostViewsTests.user_1))
+
+    def test_unfollow(self):
+        """Проверка отписки"""
+
+        Follow.objects.create(
+            user=PostViewsTests.user_1,
+            author=PostViewsTests.user_2
+        )
 
         self.authorized_client.get(
             reverse('posts:profile_unfollow', kwargs={
@@ -309,7 +317,7 @@ class PostViewsTests(TestCase):
                     self.assertTrue(
                         Post.objects.filter(
                             group=PostViewsTests.group_1,
-                            image__contains='gif',
+                            image='posts/small_1.gif',
                         ).exists()
                     )
 
@@ -343,7 +351,7 @@ class PostViewsTests(TestCase):
                     self.assertTrue(
                         Post.objects.filter(
                             group=PostViewsTests.group_1,
-                            image__contains='gif',
+                            image='posts/small_1.gif',
                         ).exists()
                     )
 
@@ -374,7 +382,7 @@ class PostViewsTests(TestCase):
             self.assertTrue(
                 Post.objects.filter(
                     group=PostViewsTests.group_1,
-                    image__contains='gif',
+                    image='posts/small_1.gif',
                 ).exists()
             )
         for number_comment in range(len(exepted_comment)):
@@ -519,17 +527,16 @@ class ShowPostAfterCreate(TestCase):
 
         test_post2 = Post.objects.create(
             author=ShowPostAfterCreate.user_1,
-            text='Проверка отображения',
+            text='Проверка кэширования',
             group=ShowPostAfterCreate.group_1,
         )
         response = self.authorized_client.get(reverse('posts:index'))
         posts_object = response.context['page_obj'][0]
         self.assertEqual(test_post2, posts_object)
-        before_response = self.authorized_client.get(reverse('posts:index'))
         test_post2.delete()
         after_del_response = self.authorized_client.get(reverse('posts:index'))
         self.assertEqual(
-            before_response.content, after_del_response.content
+            response.content, after_del_response.content
         )
         cache.clear()
         update_response = self.authorized_client.get(reverse('posts:index'))

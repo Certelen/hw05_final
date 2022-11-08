@@ -68,7 +68,7 @@ class PostCreateFormTests(TestCase):
                 author=PostCreateFormTests.user,
                 text='Длинный тестовый пост',
                 group=self.group_id,
-                image__contains='gif',
+                image='posts/small.gif',
             ).exists()
         )
 
@@ -198,6 +198,7 @@ class CommentCreateFormTests(TestCase):
         self.assertEqual(Comment.objects.count(), self.comments_count + 1)
         self.assertTrue(
             Comment.objects.filter(
+                post=self.post_id,
                 author=CommentCreateFormTests.user,
                 text='Комментарий',
             ).exists()

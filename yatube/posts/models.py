@@ -89,6 +89,9 @@ class Comment(CreatedModel):
         verbose_name = 'Комментарий'
         verbose_name_plural = 'Комментарии'
 
+    def __str__(self):
+        return self.text[:settings.MAX_SYMBOLS_IN_TAB]
+
 
 class Follow(CreatedModel):
     user = models.ForeignKey(
@@ -103,3 +106,11 @@ class Follow(CreatedModel):
         related_name='following',
         verbose_name='Автор',
     )
+
+    class Meta:
+        ordering = ('-created', )
+        verbose_name = 'Подписка'
+        verbose_name_plural = 'Подписки'
+
+    def __str__(self):
+        return f'{self.user} подписан на {self.author}'

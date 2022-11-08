@@ -2,7 +2,7 @@
 {% load user_filters %}
 
 {% block title %}
-  Пост {{ title_text }}
+  Пост {{ post }}
 {% endblock %}
 
 {% block content %}
@@ -35,7 +35,11 @@
       </ul>
     </aside>
     <article class="col-8">
-      {% include 'includes/posts.html' with HIDE_GROUP_LINK=True HIDE_PROFILE_LINK=True HIDE_POST_LINK=True %}
+      <div class="card my-4">
+        <div class="card-body">
+            {{ post.text }}
+        </div>
+      </div>
       {% if user.is_authenticated %}
       <div class="card my-4">
         <h5 class="card-header">Добавить комментарий:</h5>
