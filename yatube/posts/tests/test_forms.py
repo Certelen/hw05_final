@@ -1,3 +1,6 @@
+import shutil
+
+from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client, TestCase
 from django.urls import reverse
@@ -29,6 +32,11 @@ class PostCreateFormTests(TestCase):
         self.post_id = PostCreateFormTests.test_post.pk
         self.post_data = PostCreateFormTests.test_post.created
         self.posts_count = Post.objects.count()
+
+    @classmethod
+    def tearDownClass(cls):
+        super().tearDownClass()
+        shutil.rmtree(settings.MEDIA_ROOT, ignore_errors=True)
 
     def test_create_auth_post(self):
         """Проверка создания поста авторизированым"""

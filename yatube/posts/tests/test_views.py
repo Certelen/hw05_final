@@ -1,3 +1,5 @@
+import shutil
+
 from django import forms
 from django.conf import settings
 from django.core.cache import cache
@@ -197,6 +199,11 @@ class PostViewsTests(TestCase):
         self.post_id = PostViewsTests.post_1.pk
         self.username = PostViewsTests.post_1.author
         self.slug = PostViewsTests.group_1.slug
+
+    @classmethod
+    def tearDownClass(cls):
+        super().tearDownClass()
+        shutil.rmtree(settings.MEDIA_ROOT, ignore_errors=True)
 
     def test_views_post(self):
         """Проверка соответствия шаблона с namespace"""

@@ -8,15 +8,15 @@
 
 {% block content %}
   {% include 'posts/includes/switcher.html' %}
-  {% cache 20 index_page %}
     <div class="container py-5">
-      <h1>Последние обновления на сайте</h1>
-      
-      {% for post in page_obj %}
-        {% include 'includes/posts.html' %}
+      {% cache 20 index_page request.user.username %}
+        <h1>Последние обновления на сайте</h1>
+        
+        {% for post in page_obj %}
+          {% include 'includes/posts.html' %}
       {% endfor %}
+      {% endcache %} 
 
       {% include 'posts/includes/paginator.html' %}
-    </div>
-  {% endcache %} 
+    </div> 
 {% endblock %}

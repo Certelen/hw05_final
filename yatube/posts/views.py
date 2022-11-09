@@ -60,7 +60,7 @@ def profile(request, username):
 
 def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-    comments = Comment.objects.filter(post_id=post_id)
+    comments = Comment.objects.filter(post=post)
     comment_form = CommentForm()
 
     context = {
@@ -122,11 +122,6 @@ def add_comment(request, post_id):
 
 @login_required
 def follow_index(request):
-    user = request.user
-    follow_set = Follow.objects.filter(user=user)
-    follow_author = []
-    for follow_list in follow_set:
-        follow_author.append(follow_list.author)
     posts = Post.objects.filter(author__following__user=request.user)
 
     page_obj = paginator(request, posts)
