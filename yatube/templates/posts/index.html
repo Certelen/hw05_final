@@ -9,7 +9,7 @@
 {% block content %}
   {% include 'posts/includes/switcher.html' %}
     <div class="container py-5">
-      {% cache 20 index_page request.user.username page_obj.number %}
+      {% cache 20 index_page page_obj.number %}
         <h1>Последние обновления на сайте</h1>
         
         {% for post in page_obj %}
